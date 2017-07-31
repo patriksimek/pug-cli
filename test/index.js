@@ -368,6 +368,15 @@ describe('client JavaScript output', function () {
       return done();
     });
   });
+  it('--prefix, --suffix', function (done) {
+    w('prefix.pug', '.foo bar');
+    run(['--no-debug', '--client', '--prefix', '<%', '--suffix', '%>', 'prefix.pug'], function (err, stdout, stderr) {
+      if (err) return done(err);
+      var template = r('prefix.js');
+      assert(/^<%[\s\S]*%>$/.test(template));
+      return done();
+    });
+  });
 });
 
 describe('--watch', function () {

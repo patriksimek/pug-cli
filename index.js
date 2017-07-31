@@ -39,6 +39,8 @@ program
   .option('-w, --watch', 'watch files for changes and automatically re-render')
   .option('-E, --extension <ext>', 'specify the output file extension')
   .option('-s, --silent', 'do not output logs')
+  .option('--prefix <code>', 'prefix output with code')
+  .option('--suffix <code>', 'suffix output with code')
   .option('--name-after-file', 'name the template after the last section of the file path (requires --client and overriden by --name)')
   .option('--doctype <str>', 'specify the doctype on the command line (useful if it is not specified by the template)')
 
@@ -285,7 +287,7 @@ function renderFile(path, rootPath) {
     }
     var dir = resolve(dirname(path));
     mkdirp.sync(dir);
-    var output = options.client ? fn : fn(options);
+    var output = options.client ? ((program.prefix || '') + fn + (program.suffix || '')) : fn(options);
     fs.writeFileSync(path, output);
     consoleLog('  ' + chalk.gray('rendered') + ' ' + chalk.cyan('%s'), normalize(path));
   // Found directory
